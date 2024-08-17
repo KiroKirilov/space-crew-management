@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Space.CrewManagement.Data\Space.CrewManagement.Data.csproj" />
+  </ItemGroup>
+
 </Project>
