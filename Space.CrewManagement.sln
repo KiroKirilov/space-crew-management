@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34902.65
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Space.CrewManagement.Func", "src\Space.CrewManagement.Func\Space.CrewManagement.Func.csproj", "{B2000A76-D862-4AB1-88C6-37B70672EFD1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D84E7004-EF89-43B1-AC9E-CBB964100CA6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{1B6E7A6B-0578-4A70-8285-6D17FEE9F5E1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B2000A76-D862-4AB1-88C6-37B70672EFD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2000A76-D862-4AB1-88C6-37B70672EFD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2000A76-D862-4AB1-88C6-37B70672EFD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2000A76-D862-4AB1-88C6-37B70672EFD1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B2000A76-D862-4AB1-88C6-37B70672EFD1} = {D84E7004-EF89-43B1-AC9E-CBB964100CA6}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8E515F55-4ACA-4D15-A2E4-0F9109191F43}
+	EndGlobalSection
+EndGlobal
