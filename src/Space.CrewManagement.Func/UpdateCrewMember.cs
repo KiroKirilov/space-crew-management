@@ -13,25 +13,31 @@ using System.Web.Http;
 
 namespace Space.CrewManagement.Func;
 
-public class CreateCrewMember(ILogger<CreateCrewMember> _logger, IBodyParser _parser, ICrewMemberService _crewMemberService)
+public class UpdateCrewMember(ILogger<UpdateCrewMember> _logger, IBodyParser _parser, ICrewMemberService _crewMemberService)
 {
-    [OpenApiOperation(operationId: "CreateCrewMember", tags: ["crew-members"])]
+    [OpenApiOperation(operationId: "UpdateCrewMember", tags: ["crew-members"])]
     [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
-    [OpenApiRequestBody(contentType: "application/json", bodyType: typeof(CreateCrewMemberDto))]
-    [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.Created)]
-    [Function("CreateCrewMember")]
-    public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "crew-members")] HttpRequest req)
+    [OpenApiParameter(name: "id", In = ParameterLocation.Path, Required = true, Type = typeof(Guid), Description = "The ID of the crew member to be updated")]
+    [OpenApiRequestBody(contentType: "application/json", bodyType: typeof(UpdateCrewMemberDto))]
+    [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.OK)]
+    [Function("UpdateCrewMember")]
+    public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "patch", Route = "crew-members/{id}")] HttpRequest req, string id)
     {
-        var dto = await _parser.Parse<CreateCrewMemberDto>(req.Body);
+        var dto = await _parser.Parse<UpdateCrewMemberDto>(req.Body);
         if (dto is null)
+        {
+            return new BadRequestResult();
+        }
+
+        if (!Guid.TryParse(id, out var parsedId))
         {
             return new BadRequestResult();
         }
 
         try
         {
-            await _crewMemberService.Create(dto);
-            return new CreatedResult();
+            await _crewMemberService.Update(parsedId, dto);
+            return new OkResult();
         }
         catch (ValidationException valEx)
         {
@@ -44,10 +50,6 @@ public class CreateCrewMember(ILogger<CreateCrewMember> _logger, IBodyParser _pa
         catch (DuplicateEntityException dEx)
         {
             return new ConflictObjectResult(dEx.ResponseObject);
-        }
-        catch (ExternalServiceException ex)
-        {
-            return new BadRequestObjectResult(new { ex.Message });
         }
         catch (Exception ex)
         {

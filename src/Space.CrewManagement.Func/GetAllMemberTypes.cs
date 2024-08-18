@@ -15,7 +15,7 @@ namespace Space.CrewManagement.Func;
 public class GetAllMemberTypes(ILogger<GetAllMemberTypes> _logger, IMemberTypeService _memberTypeService)
 {
 
-    [OpenApiOperation(operationId: "Run", tags: ["member-types"])]
+    [OpenApiOperation(operationId: "GetAllMemberTypes", tags: ["member-types"])]
     [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<MemberTypeDto>))]
     [Function("GetAllMemberTypes")]

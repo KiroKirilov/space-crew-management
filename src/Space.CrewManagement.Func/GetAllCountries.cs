@@ -15,7 +15,7 @@ namespace Space.CrewManagement.Func;
 public class GetAllCountries(ILogger<GetAllCountries> _logger, ICountryService _countryService)
 {
 
-    [OpenApiOperation(operationId: "Run", tags: ["countries"])]
+    [OpenApiOperation(operationId: "GetAllCountries", tags: ["countries"])]
     [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
     [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<CountryDto>))]
     [Function("GetAllCountries")]

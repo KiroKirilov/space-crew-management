@@ -13,14 +13,14 @@ using System.Web.Http;
 
 namespace Space.CrewManagement.Func;
 
-public class DeleteCrewMember(ILogger<DeleteCrewMember> _logger, ICrewMemberService _crewMemberService)
+public class GetCrewMemberbyId(ILogger<GetCrewMemberbyId> _logger, ICrewMemberService _crewMemberService)
 {
-    [OpenApiOperation(operationId: "DeleteCrewMember", tags: ["crew-members"])]
+    [OpenApiOperation(operationId: "GetCrewMemberbyId", tags: ["crew-members"])]
     [OpenApiSecurity("function_key", SecuritySchemeType.ApiKey, Name = "code", In = OpenApiSecurityLocationType.Query)]
     [OpenApiParameter(name: "id", In = ParameterLocation.Path, Required = true, Type = typeof(Guid), Description = "The ID of the crew member to be deleted")]
-    [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.OK)]
-    [Function("DeleteCrewMember")]
-    public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "crew-members/{id}")] HttpRequest req, string id)
+    [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(CrewMemberResponseDto))]
+    [Function("GetCrewMemberbyId")]
+    public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", Route = "crew-members/{id}")] HttpRequest req, string id)
     {
         if (!Guid.TryParse(id, out var parsedId))
         {
@@ -29,8 +29,8 @@ public class DeleteCrewMember(ILogger<DeleteCrewMember> _logger, ICrewMemberServ
 
         try
         {
-            await _crewMemberService.Delete(parsedId);
-            return new CreatedResult();
+            var crewMember = await _crewMemberService.GetById(parsedId);
+            return new OkObjectResult(crewMember);
         }
         catch (EntityNotFoundException nfEx)
         {
