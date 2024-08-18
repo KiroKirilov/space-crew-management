@@ -121,6 +121,7 @@ public class CrewMemberService(
         var query = _crewRepo
             .AllAsNoTracking()
             .Select(x => new CrewMemberResponseDto(
+                x.Id,
                 x.Name,
                 x.Email,
                 x.CountryCode,
@@ -134,13 +135,13 @@ public class CrewMemberService(
 
         var totalCount = await query.CountAsync();
 
-        if (page.HasValue && pageSize.HasValue)
+        if (page.HasValue && pageSize.HasValue && page > 0 && pageSize > 0)
         {
             query = query.Skip((page.Value - 1) * pageSize.Value).Take(pageSize.Value);
         }
 
         var crewMembers = await query.ToListAsync();
-        var totalPages = (int)Math.Ceiling((double)totalCount / pageSize ?? totalCount);
+        var totalPages = (int)Math.Ceiling((double)totalCount / (pageSize ?? totalCount));
 
         return new CrewMemberListDto(totalCount, totalPages, crewMembers);
     }
@@ -151,6 +152,7 @@ public class CrewMemberService(
             .AllAsNoTracking()
             .Where(x => x.Id == id)
             .Select(x => new CrewMemberResponseDto(
+                x.Id,
                 x.Name,
                 x.Email,
                 x.CountryCode,
@@ -179,20 +181,27 @@ public class CrewMemberService(
 
     private async Task<CrewMemberStatusDto> GetCrewStatus(DateOnly birthday, DateOnly lastCertificationDate)
     {
-        var formattedBirthday = birthday.ToString("yyyy-MM-dd");
-        var formattedCertificationDate = lastCertificationDate.ToString("yyyy-MM-dd");
-        var response = await _httpClient.GetAsync($"/api/crew-members/status?certificationDate={formattedCertificationDate}&birthday={formattedBirthday}");
-
-        if (!response.IsSuccessStatusCode)
+        try
         {
-            throw new ExternalServiceException($"External service returned bad status code: {response.StatusCode}");
+            var formattedBirthday = birthday.ToString("yyyy-MM-dd");
+            var formattedCertificationDate = lastCertificationDate.ToString("yyyy-MM-dd");
+            var response = await _httpClient.GetAsync($"/api/crew-members/status?certificationDate={formattedCertificationDate}&birthday={formattedBirthday}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ExternalServiceException($"External service returned bad status code: {response.StatusCode}");
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
+            var statusDto = JsonConvert.DeserializeObject<CrewMemberStatusDto>(content);
+
+            return statusDto is null
+                ? throw new ExternalServiceException("External service returned an invalid response body")
+                : statusDto;
         }
-
-        var content = await response.Content.ReadAsStringAsync();
-        var statusDto = JsonConvert.DeserializeObject<CrewMemberStatusDto>(content);
-
-        return statusDto is null 
-            ? throw new ExternalServiceException("External service returned an invalid response body") 
-            : statusDto;
+        catch (HttpRequestException e)
+        {
+            throw new ExternalServiceException($"Network error occurred: {e.Message}", e);
+        }
     }
 }

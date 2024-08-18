@@ -2,6 +2,7 @@
 
 namespace Space.CrewManagement.Services.Dtos;
 public record CrewMemberResponseDto(
+    Guid Id,
     string Name,
     string Email,
     string CountryCode,

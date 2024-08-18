@@ -22,7 +22,7 @@ public class CrewMemberValidator(ICountryService _countryService, IDateProvider 
             }
             else if (birthdayDate.AddYears(18) > _dateProvider.Now)
             {
-                errors.Add(new ValidationError("Birthday", "Birthday is younger than 18"));
+                errors.Add(new ValidationError("Birthday", "Crew member is younger than 18"));
             }
         }
 
