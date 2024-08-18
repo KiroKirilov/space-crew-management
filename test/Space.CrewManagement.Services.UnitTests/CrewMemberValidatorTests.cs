@@ -70,11 +70,12 @@ public class CrewMemberValidatorTests
     }
 
     [Theory]
-    [InlineData("12312")]
-    [InlineData("asd")]
-    [InlineData("1@1:123")]
-    [InlineData("abc@ab@a")]
-    public void ThrowIfInvalidCreate_GivenInvalidEmail_ThrowsCorrectExpection(string email)
+    [InlineData("12312", "Email is not a valid email")]
+    [InlineData("asd", "Email is not a valid email")]
+    [InlineData("1@1:123", "Email is not a valid email")]
+    [InlineData("abc@ab@a", "Email is not a valid email")]
+    [InlineData("01234567890012345678900123456789001234567890012345678900123456789001234567890012345678901012345678901", "Email is more than 100 characters")]
+    public void ThrowIfInvalidCreate_GivenInvalidEmail_ThrowsCorrectExpection(string email, string expectedMessage)
     {
         var sut = new CrewMemberValidator(_countryService, _dateProvider);
 
@@ -94,7 +95,7 @@ public class CrewMemberValidatorTests
 
         act.Should().ThrowExactly<ValidationException>()
             .Which.ValidationErrors.Should().BeEquivalentTo([
-                new ValidationError("Email", "Email is not a valid email")
+                new ValidationError("Email", expectedMessage)
                 ]);
     }
 

@@ -60,6 +60,10 @@ public class CrewMemberValidator(ICountryService _countryService, IDateProvider 
         {
             errors.Add(new ValidationError("Email", "Email is missing"));
         }
+        else if (dto.Email.Length > 100)
+        {
+            errors.Add(new ValidationError("Email", "Email is more than 100 characters"));
+        }
         else if (!MailAddress.TryCreate(dto.Email, null, out var _))
         {
             errors.Add(new ValidationError("Email", "Email is not a valid email"));
