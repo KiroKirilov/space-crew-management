@@ -1,0 +1,12 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "CrewMemberServiceUrl": "{SERVICE_BASE_URL}",
+    "CrewMemberServiceKey": "{KEY}"
+  },
+  "ConnectionStrings": {
+    "CrewDb": "{CONN_STR}"
+  }
+}
