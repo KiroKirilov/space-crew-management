@@ -9,7 +9,7 @@ public class CrewMember : BaseModel<Guid>
     public string ProfileImageUrl { get; set; } = string.Empty;
     public DateOnly LastCertificationDate { get; set; }
 
-    public int Status { get; set; }
+    public CrewMemberStatus Status { get; set; }
     public string StatusDescription { get; set; } = string.Empty;
 
     public Guid LicenseId { get; set; }
@@ -17,4 +17,11 @@ public class CrewMember : BaseModel<Guid>
 
     public Guid MemberTypeId { get; set; }
     public virtual MemberType MemberType { get; set; } = null!;
+}
+
+public enum CrewMemberStatus
+{
+    Ok = 0,
+    LicenseExpired = 1,
+    CrewRetired = 2
 }
