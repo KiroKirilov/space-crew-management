@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using NSubstitute;
 using Space.CrewManagement.Services.Dtos;
+using Space.CrewManagement.Services.Exceptions;
 using Space.CrewManagement.Services.Interfaces;
 using Space.CrewManagement.Services.Services;
 using Space.CrewManagement.Services.Validation;

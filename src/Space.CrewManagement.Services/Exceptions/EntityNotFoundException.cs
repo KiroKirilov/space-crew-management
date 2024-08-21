@@ -1,4 +1,4 @@
-﻿namespace Space.CrewManagement.Services.Validation;
+﻿namespace Space.CrewManagement.Services.Exceptions;
 public class EntityNotFoundException(string entityName) : Exception
 {
     public string EntityName { get; private set; } = entityName;

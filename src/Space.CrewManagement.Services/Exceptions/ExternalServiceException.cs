@@ -1,5 +1,5 @@
-﻿namespace Space.CrewManagement.Services.Validation;
-public class ExternalServiceException: Exception
+﻿namespace Space.CrewManagement.Services.Exceptions;
+public class ExternalServiceException : Exception
 {
     public ExternalServiceException(string? message)
         : base(message)

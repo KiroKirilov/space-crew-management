@@ -1,4 +1,5 @@
 ﻿using Space.CrewManagement.Services.Dtos;
+using Space.CrewManagement.Services.Exceptions;
 using Space.CrewManagement.Services.Interfaces;
 using Space.CrewManagement.Services.Validation;
 using System.Net.Mail;
